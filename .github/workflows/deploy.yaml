@@ -1,0 +1,34 @@
+name: CI/CD Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Deploy to Netlify (Example)
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: "./dist"
+          production-branch: "main"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Automated deployment"
